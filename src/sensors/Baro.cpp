@@ -18,6 +18,8 @@ namespace Sensors::Baro {
     }
 
     void getData(BaroData& data) {
+        if(baroStatus == SensorStatus::INIT_FAIL) return;
+
         bool ok = baro.read() == MS5611_READ_OK;
 
         if(ok) {

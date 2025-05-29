@@ -4,6 +4,7 @@
 #include <Arduino.h>
 
 #include "MS5611.h"
+#include "LIS2MDL.h"
 
 namespace Sensors {
     enum class SensorStatus {
@@ -24,6 +25,16 @@ namespace Sensors {
 
         void setup();
         void getData(BaroData& data);
+    }
+
+    namespace Mag {
+        typedef float MagData[3];
+
+        extern LIS2MDL mag;
+        extern SensorStatus magStatus;
+
+        void setup();
+        void getData(MagData& data);
     }
 }
 
