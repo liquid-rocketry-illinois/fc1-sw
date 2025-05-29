@@ -16,6 +16,12 @@ namespace Sensors {
         DATA_FAIL,
     };
 
+    struct AxisData {
+        float x;
+        float y;
+        float z;
+    };
+
     namespace Ambient {
         constexpr uint8_t BARO_ADDR = 0x77;
 
@@ -36,13 +42,11 @@ namespace Sensors {
     }
 
     namespace Mag {
-        typedef float MagData[3];
-
         extern LIS2MDL mag;
         extern SensorStatus magStatus;
 
         void setup();
-        void getData(MagData& data);
+        void getData(AxisData& data);
     }
 
 }

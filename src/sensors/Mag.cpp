@@ -28,11 +28,11 @@ namespace Sensors::Mag {
         }
     }
 
-    void getData(MagData& data) {
+    void getData(AxisData& data) {
         if(magStatus == SensorStatus::INIT_FAIL) return;
         magStatus = SensorStatus::DATA_READY;
-        data[0] = mag.readFloatMagX();
-        data[1] = mag.readFloatMagY();
-        data[2] = mag.readFloatMagZ();
+        data.x = mag.readFloatMagX();
+        data.y = mag.readFloatMagY();
+        data.z = mag.readFloatMagZ();
     }
 }
