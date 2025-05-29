@@ -5,6 +5,7 @@
 
 #include "MS5611.h"
 #include "LIS2MDL.h"
+#include "SensirionI2cSht4x.h"
 
 namespace Sensors {
     enum class SensorStatus {
@@ -15,16 +16,23 @@ namespace Sensors {
         DATA_FAIL,
     };
 
-    namespace Baro {
+    namespace Ambient {
         constexpr uint8_t BARO_ADDR = 0x77;
 
-        typedef float BaroData;
+        struct AmbientData {
+            float pressure;
+            float humidity;
+            float temperature;
+        };
 
         extern MS5611 baro;
+        extern SensirionI2cSht4x sht;
+
         extern SensorStatus baroStatus;
+        extern SensorStatus shtStatus;
 
         void setup();
-        void getData(BaroData& data);
+        void getData(AmbientData& data);
     }
 
     namespace Mag {
@@ -36,6 +44,7 @@ namespace Sensors {
         void setup();
         void getData(MagData& data);
     }
+
 }
 
 #endif //SENSORS_H
