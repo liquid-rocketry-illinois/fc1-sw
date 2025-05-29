@@ -1,8 +1,24 @@
 #include <Arduino.h>
+#include "RCP.h"
+
 void setup() {
-// write your initialization code here
+    Serial.begin(115200);
+    while(!Serial) {
+        yield();
+        delay(10);
+    }
+
+    RCP::init();
+    RCP::setReady(true);
+    RCPDebug("[RCP] Initialization complete!");
 }
 
 void loop() {
-// write your code here
+    RCP::yield();
+    RCP::runTest();
 }
+
+void RCP::systemReset() {
+    NVIC_SystemReset();
+}
+
