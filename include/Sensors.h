@@ -8,6 +8,7 @@
 #include "SensirionI2cSht4x.h"
 #include "ICM42688.h"
 #include "BMI088.h"
+#include "SparkFun_u-blox_GNSS_v3.h"
 
 namespace Sensors {
     enum class SensorStatus {
@@ -69,6 +70,23 @@ namespace Sensors {
 
         void setup();
         void getData(IMUData& icmData, IMUData& bmiData);
+    }
+
+    namespace GNSS {
+        constexpr uint8_t GNSS_ADDR = 0x42;
+
+        struct GNSSData {
+            float lat;
+            float lon;
+            float alt;
+            float gs;
+        };
+
+        extern SFE_UBLOX_GNSS gnss;
+        extern SensorStatus gnssStatus;
+
+        void setup();
+        void getData(GNSSData& data);
     }
 
 }
