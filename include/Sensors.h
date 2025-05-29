@@ -6,6 +6,8 @@
 #include "MS5611.h"
 #include "LIS2MDL.h"
 #include "SensirionI2cSht4x.h"
+#include "ICM42688.h"
+#include "BMI088.h"
 
 namespace Sensors {
     enum class SensorStatus {
@@ -47,6 +49,26 @@ namespace Sensors {
 
         void setup();
         void getData(AxisData& data);
+    }
+
+    namespace IMU {
+        constexpr uint8_t ICM_ADDR = 0x69;
+        constexpr uint8_t BMI_ACCEL_ADDR = 0x18;
+        constexpr uint8_t BMI_GYRO_ADDR = 0x68;
+
+        struct IMUData {
+            AxisData accel;
+            AxisData gyro;
+        };
+
+        extern ICM42688 icm;
+        extern Bmi088 bmi;
+
+        extern SensorStatus icmStatus;
+        extern SensorStatus bmiStatus;
+
+        void setup();
+        void getData(IMUData& icmData, IMUData& bmiData);
     }
 
 }
