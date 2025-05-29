@@ -1,16 +1,19 @@
 #ifndef RCP_HOST_H
 #define RCP_HOST_H
 
-#include <stdint.h>
+#include <cstdint>
 
 #include "LRIRingBuf.h"
 #include "test.h"
 
 // void yield();
 
+// This do-while(0) thing is horrible but if the linux kernel can do it so can I
 #define RCPDebug(str)                                                                                                  \
-  static_assert(sizeof str < 64, "RCP Debug string too long!");                                                        \
-  RCP::RCPWriteSerialString(str "\n");
+do {                                                                                                                   \
+static_assert(sizeof str < 64, "RCP Debug string too long!");                                                          \
+RCP::RCPWriteSerialString(str "\n");                                                                                   \
+} while(0)
 
 typedef enum {
     RCP_CH_ZERO = 0x00,
@@ -92,31 +95,32 @@ typedef enum {
 } RCP_GONOGO;
 
 namespace RCP {
-typedef void (*PromptAcceptor)(void* val);
+    typedef void (*PromptAcceptor)(void* val);
 
-constexpr int SERIAL_BYTES_PER_LOOP = 20;
-constexpr int RCP_SERIAL_BUFFER_SIZE = 128;
+    constexpr int SERIAL_BYTES_PER_LOOP = 20;
+    constexpr int RCP_SERIAL_BUFFER_SIZE = 128;
 
-extern RCP_Channel channel;
-extern LRI::RingBuf<uint8_t, RCP_SERIAL_BUFFER_SIZE> inbuffer;
+    extern RCP_Channel channel;
+    extern LRI::RingBuf<uint8_t, RCP_SERIAL_BUFFER_SIZE> inbuffer;
 
-extern Test::Procedure* ESTOP_PROC;
+    extern Test::Procedure* ESTOP_PROC;
 
-extern bool dataStreaming;
-extern uint8_t testNum;
-extern RCP_TestRunningState testState;
-extern bool ready;
-extern uint8_t promptValue[4];
+    extern bool dataStreaming;
+    extern uint8_t testNum;
+    extern RCP_TestRunningState testState;
+    extern bool ready;
+    extern uint8_t promptValue[4];
 
-void init();
-void setReady(bool newready);
-void RCPWriteSerialString(const char* str);
-void sendTestState();
-void ESTOP();
-void setPrompt(const char* str, RCP_PromptDataType gng, PromptAcceptor acceptor);
-void yield();
-void runTest();
-__attribute__ ((weak)) void systemReset();
+    void init();
+    void setReady(bool newready);
+    void RCPWriteSerialString(const char* str);
+    void sendTestState();
+    void ESTOP();
+    void setPrompt(const char* str, RCP_PromptDataType gng, PromptAcceptor acceptor);
+    void yield();
+    void runTest();
+    __attribute__ ((weak)) void systemReset();
 } // namespace RCP
+
 
 #endif // RCP_HOST_H

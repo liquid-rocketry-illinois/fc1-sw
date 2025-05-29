@@ -1,6 +1,7 @@
 #include <Arduino.h>
 
 #include "RCP.h"
+#include "Sensors.h"
 
 void setup() {
     Serial.begin(115200);
