@@ -207,4 +207,59 @@ namespace RCP {
         while(true) {}
     }
 
+    void sendOneFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value) {
+        uint32_t time = millis() - timeOffset;
+        uint8_t data[11] = {0};
+        data[0] = channel | 11;
+        data[1] = devclass;
+        data[2] = time >> 24;
+        data[3] = time >> 16;
+        data[4] = time >> 8;
+        data[5] = time;
+        data[6] = id;
+        memcpy(data + 7, &value, 4);
+        Serial.write(data, 11);
+    }
+
+    void sendTwoFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[2]) {
+        uint32_t time = millis() - timeOffset;
+        uint8_t data[15] = {0};
+        data[0] = channel | 15;
+        data[1] = devclass;
+        data[2] = time >> 24;
+        data[3] = time >> 16;
+        data[4] = time >> 8;
+        data[5] = time;
+        data[6] = id;
+        memcpy(data + 7, value, 8);
+        Serial.write(data, 15);
+    }
+
+    void sendThreeFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[3]) {
+        uint32_t time = millis() - timeOffset;
+        uint8_t data[19] = {0};
+        data[0] = channel | 19;
+        data[1] = devclass;
+        data[2] = time >> 24;
+        data[3] = time >> 16;
+        data[4] = time >> 8;
+        data[5] = time;
+        data[6] = id;
+        memcpy(data + 7, value, 12);
+        Serial.write(data, 19);
+    }
+
+    void sendFourFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[4]) {
+        uint32_t time = millis() - timeOffset;
+        uint8_t data[23] = {0};
+        data[0] = channel | 23;
+        data[1] = devclass;
+        data[2] = time >> 24;
+        data[3] = time >> 16;
+        data[4] = time >> 8;
+        data[5] = time;
+        data[6] = id;
+        memcpy(data + 7, value, 16);
+        Serial.write(data, 23);
+    }
 } // namespace RCP

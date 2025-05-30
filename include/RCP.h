@@ -121,6 +121,12 @@ namespace RCP {
     void yield();
     void runTest();
     __attribute__ ((weak)) void systemReset();
+
+    void sendOneFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value);
+    void sendTwoFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[2]);
+    void sendThreeFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[3]);
+    void sendFourFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[4]);
+
 } // namespace RCP
 
 
