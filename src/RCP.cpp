@@ -151,9 +151,13 @@ namespace RCP {
 
                     case 0x02:
                         systemReset();
-                        while(true) {}
+                        break;
+
+                    case 0x03:
+                        timeOffset = millis();
                         break;
                     }
+
                     break;
                 }
 
