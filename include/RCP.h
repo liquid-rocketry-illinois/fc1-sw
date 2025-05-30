@@ -110,6 +110,7 @@ namespace RCP {
     extern RCP_TestRunningState testState;
     extern bool ready;
     extern uint8_t promptValue[4];
+    extern uint32_t timeOffset;
 
     void init();
     void setReady(bool newready);
