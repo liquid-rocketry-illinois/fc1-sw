@@ -19,20 +19,27 @@ namespace Sensors {
         DATA_FAIL,
     };
 
-    struct AxisData {
+    // This "packed" attribute ensures all members are back to back in memory, so when they are serialized
+    // we dont have to worry about alignment or padding. The static asserts make sure the packed size of
+    // the structs is correct
+    __attribute__ ((packed)) struct AxisData {
         float x;
         float y;
         float z;
     };
 
+    static_assert(sizeof(AxisData) == 12);
+
     namespace Ambient {
         constexpr uint8_t BARO_ADDR = 0x77;
 
-        struct AmbientData {
+        __attribute__ ((packed)) struct AmbientData {
             float pressure;
             float humidity;
             float temperature;
         };
+
+        static_assert(sizeof(AmbientData) == 12);
 
         extern MS5611 baro;
         extern SensirionI2cSht4x sht;
@@ -57,10 +64,12 @@ namespace Sensors {
         constexpr uint8_t BMI_ACCEL_ADDR = 0x18;
         constexpr uint8_t BMI_GYRO_ADDR = 0x68;
 
-        struct IMUData {
+        __attribute__ ((packed)) struct IMUData {
             AxisData accel;
             AxisData gyro;
         };
+
+        static_assert(sizeof(IMUData) == 24);
 
         extern ICM42688 icm;
         extern Bmi088 bmi;
@@ -75,12 +84,14 @@ namespace Sensors {
     namespace GNSS {
         constexpr uint8_t GNSS_ADDR = 0x42;
 
-        struct GNSSData {
+        __attribute__ ((packed)) struct GNSSData {
             float lat;
             float lon;
             float alt;
             float gs;
         };
+
+        static_assert(sizeof(GNSSData) == 16);
 
         extern SFE_UBLOX_GNSS gnss;
         extern SensorStatus gnssStatus;
@@ -89,6 +100,16 @@ namespace Sensors {
         void getData(GNSSData& data);
     }
 
+    __attribute__ ((packed)) struct SensorData {
+        uint32_t timestamp;
+        Ambient::AmbientData ambientData;
+        AxisData magData;
+        IMU::IMUData icmData;
+        IMU::IMUData bmiData;
+        GNSS::GNSSData gnssData;
+    };
+
+    static_assert(sizeof(SensorData) == 92);
 }
 
 #endif //SENSORS_H
