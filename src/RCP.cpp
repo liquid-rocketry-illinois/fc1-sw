@@ -1,7 +1,9 @@
 #include <Arduino.h>
 
 #include "RCP.h"
+
 #include "test.h"
+#include "Sensors.h"
 
 namespace RCP {
 
@@ -179,6 +181,23 @@ namespace RCP {
                 break;
             }
 
+            case RCP_DEVCLASS_AM_PRESSURE:
+            case RCP_DEVCLASS_RELATIVE_HYGROMETER:
+            case RCP_DEVCLASS_AM_TEMPERATURE:
+            case RCP_DEVCLASS_MAGNETOMETER:
+            case RCP_DEVCLASS_ACCELEROMETER:
+            case RCP_DEVCLASS_GYROSCOPE:
+            case RCP_DEVCLASS_GPS: {
+                uint8_t tareChannel = 255;
+                float tareVal = 0;
+                if(pktlen == 6) {
+                    memcpy(&tareVal, bytes + 4, 4);
+                    tareChannel = bytes[3];
+                }
+
+                Sensors::handleRCPSensorRead(static_cast<RCP_DeviceClass>(bytes[1]), bytes[2], tareChannel, tareVal);
+            }
+
             default:
                 break;
             }
@@ -207,7 +226,7 @@ namespace RCP {
         while(true) {}
     }
 
-    void sendOneFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value) {
+    void sendOneFloat(const RCP_DeviceClass devclass, const uint8_t id, const float* value) {
         uint32_t time = millis() - timeOffset;
         uint8_t data[11] = {0};
         data[0] = channel | 11;
@@ -217,7 +236,7 @@ namespace RCP {
         data[4] = time >> 8;
         data[5] = time;
         data[6] = id;
-        memcpy(data + 7, &value, 4);
+        memcpy(data + 7, value, 4);
         Serial.write(data, 11);
     }
 

@@ -18,9 +18,9 @@ namespace Sensors {
         }
 
         if(RCP::dataStreaming) {
-            RCP::sendOneFloat(RCP_DEVCLASS_AM_PRESSURE, 0, latestReadings.ambientData.pressure);
-            RCP::sendOneFloat(RCP_DEVCLASS_RELATIVE_HYGROMETER, 0, latestReadings.ambientData.humidity);
-            RCP::sendOneFloat(RCP_DEVCLASS_AM_TEMPERATURE, 0, latestReadings.ambientData.temperature);
+            RCP::sendOneFloat(RCP_DEVCLASS_AM_PRESSURE, 0, &latestReadings.ambientData.pressure);
+            RCP::sendOneFloat(RCP_DEVCLASS_RELATIVE_HYGROMETER, 0, &latestReadings.ambientData.humidity);
+            RCP::sendOneFloat(RCP_DEVCLASS_AM_TEMPERATURE, 0, &latestReadings.ambientData.temperature);
 
             RCP::sendThreeFloat(RCP_DEVCLASS_MAGNETOMETER, 0, reinterpret_cast<float*>(&latestReadings.magData));
 
@@ -33,4 +33,63 @@ namespace Sensors {
             RCP::sendFourFloat(RCP_DEVCLASS_GPS, 0, reinterpret_cast<float*>(&latestReadings.gnssData));
         }
     }
+
+    static void handleTare(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {}
+
+    static void handleRead(RCP_DeviceClass devclass, uint8_t id) {
+        void (*writer)(const RCP_DeviceClass, const uint8_t, const float*) = nullptr;
+        const float* data = nullptr;
+
+        switch(devclass) {
+        case RCP_DEVCLASS_AM_PRESSURE:
+            writer = RCP::sendOneFloat;
+            data = &latestReadings.ambientData.pressure;
+            break;
+
+        case RCP_DEVCLASS_RELATIVE_HYGROMETER:
+            writer = RCP::sendOneFloat;
+            data = &latestReadings.ambientData.humidity;
+            break;
+
+        case RCP_DEVCLASS_AM_TEMPERATURE:
+            writer = RCP::sendOneFloat;
+            data = &latestReadings.ambientData.temperature;
+            break;
+
+        case RCP_DEVCLASS_MAGNETOMETER:
+            writer = RCP::sendThreeFloat;
+            data = reinterpret_cast<const float*>(&latestReadings.magData);
+            break;
+
+        case RCP_DEVCLASS_ACCELEROMETER:
+            writer = RCP::sendThreeFloat;
+            data =
+                reinterpret_cast<const float*>(id == 0 ? &latestReadings.icmData.accel : &latestReadings.bmiData.accel);
+            break;
+
+        case RCP_DEVCLASS_GYROSCOPE:
+            writer = RCP::sendThreeFloat;
+            data =
+                reinterpret_cast<const float*>(id == 0 ? &latestReadings.icmData.gyro : &latestReadings.bmiData.gyro);
+            break;
+
+        case RCP_DEVCLASS_GPS:
+            writer = RCP::sendFourFloat;
+            data = reinterpret_cast<const float*>(&latestReadings.gnssData);
+            break;
+
+        default:
+            return;
+        }
+
+        writer(devclass, id, data);
+    }
+
+    void handleRCPSensorRead(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {
+        if(tareChannel == 255)
+            handleRead(devclass, id);
+        else
+            handleTare(devclass, id, tareChannel, tareVal);
+    }
+
 } // namespace Sensors

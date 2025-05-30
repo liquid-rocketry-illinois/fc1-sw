@@ -3,12 +3,13 @@
 
 #include <Arduino.h>
 
-#include "MS5611.h"
-#include "LIS2MDL.h"
-#include "SensirionI2cSht4x.h"
-#include "ICM42688.h"
 #include "BMI088.h"
+#include "ICM42688.h"
+#include "LIS2MDL.h"
+#include "MS5611.h"
+#include "SensirionI2cSht4x.h"
 #include "SparkFun_u-blox_GNSS_v3.h"
+#include "RCP.h"
 
 namespace Sensors {
     enum class SensorStatus {
@@ -22,7 +23,7 @@ namespace Sensors {
     // This "packed" attribute ensures all members are back to back in memory, so when they are serialized
     // we dont have to worry about alignment or padding. The static asserts make sure the packed size of
     // the structs is correct
-    struct __attribute__ ((packed)) AxisData {
+    struct AxisData {
         float x;
         float y;
         float z;
@@ -33,7 +34,7 @@ namespace Sensors {
     namespace Ambient {
         constexpr uint8_t BARO_ADDR = 0x77;
 
-        struct __attribute__ ((packed)) AmbientData {
+        struct AmbientData {
             float pressure;
             float humidity;
             float temperature;
@@ -64,7 +65,7 @@ namespace Sensors {
         constexpr uint8_t BMI_ACCEL_ADDR = 0x18;
         constexpr uint8_t BMI_GYRO_ADDR = 0x68;
 
-        struct __attribute__ ((packed)) IMUData {
+        struct IMUData {
             AxisData accel;
             AxisData gyro;
         };
@@ -84,7 +85,7 @@ namespace Sensors {
     namespace GNSS {
         constexpr uint8_t GNSS_ADDR = 0x42;
 
-        struct __attribute__ ((packed)) GNSSData {
+        struct GNSSData {
             float lat;
             float lon;
             float alt;
@@ -100,7 +101,7 @@ namespace Sensors {
         void getData(GNSSData& data);
     }
 
-    struct __attribute__ ((packed)) SensorData {
+    struct SensorData {
         uint32_t timestamp;
         Ambient::AmbientData ambientData;
         AxisData magData;
@@ -114,6 +115,7 @@ namespace Sensors {
     extern SensorData latestReadings;
 
     void yield();
+    void handleRCPSensorRead(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal);
 }
 
 #endif //SENSORS_H

@@ -99,7 +99,7 @@ namespace SD {
         }
 
         csv.concat("\n");
-        if(log.write(csv.c_str()) == -1 || !log.sync()) {
+        if(log.write(csv.c_str()) == static_cast<size_t>(-1) || !log.sync()) {
             RCPDebug("[SD] Failed to write live data to log, disabling");
             log.close();
             root.close();
