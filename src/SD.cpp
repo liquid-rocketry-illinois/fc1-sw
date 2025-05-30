@@ -87,7 +87,7 @@ namespace SD {
     }
 
     void writeDataCSV(const Sensors::SensorData& data) {
-        if(!initSuccess) return;
+        if(!initSuccess || !log.isOpen()) return;
 
         String csv(data.timestamp);
 

@@ -110,6 +110,10 @@ namespace Sensors {
     };
 
     static_assert(sizeof(SensorData) == 92);
+
+    extern SensorData latestReadings;
+
+    void yield();
 }
 
 #endif //SENSORS_H

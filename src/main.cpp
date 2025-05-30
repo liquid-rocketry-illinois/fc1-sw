@@ -2,7 +2,6 @@
 
 #include "RCP.h"
 #include "Sensors.h"
-#include "SD.h"
 
 void setup() {
     Serial.begin(115200);
@@ -19,6 +18,7 @@ void setup() {
 void loop() {
     RCP::yield();
     RCP::runTest();
+    Sensors::yield();
 }
 
 void RCP::systemReset() {
