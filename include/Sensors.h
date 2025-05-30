@@ -50,6 +50,7 @@ namespace Sensors {
 
         void setup();
         void getData(AmbientData& data);
+        void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal);
     }
 
     namespace Mag {
@@ -58,6 +59,7 @@ namespace Sensors {
 
         void setup();
         void getData(AxisData& data);
+        void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal);
     }
 
     namespace IMU {
@@ -80,6 +82,7 @@ namespace Sensors {
 
         void setup();
         void getData(IMUData& icmData, IMUData& bmiData);
+        void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal);
     }
 
     namespace GNSS {
@@ -99,6 +102,7 @@ namespace Sensors {
 
         void setup();
         void getData(GNSSData& data);
+        void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal);
     }
 
     struct SensorData {

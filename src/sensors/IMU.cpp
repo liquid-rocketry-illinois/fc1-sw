@@ -1,5 +1,5 @@
-#include "Sensors.h"
 #include "RCP.h"
+#include "Sensors.h"
 
 namespace Sensors::IMU {
     ICM42688 icm(Wire, ICM_ADDR);
@@ -8,9 +8,9 @@ namespace Sensors::IMU {
     SensorStatus icmStatus = SensorStatus::RESET;
     SensorStatus bmiStatus = SensorStatus::RESET;
 
-    inline float toDeg(float rads) {
-        return static_cast<float>(rads * 180.0f / M_PI);
-    }
+    static float bmiTares[2][3] = {0};
+
+    inline float toDeg(float rads) { return static_cast<float>(rads * 180.0f / M_PI); }
 
     void setupICM() {
         icmStatus = SensorStatus::INIT_FAIL;
@@ -84,12 +84,27 @@ namespace Sensors::IMU {
         if(bmiStatus != SensorStatus::INIT_FAIL) {
             bmiStatus = SensorStatus::DATA_READY;
             bmi.readSensor();
-            bmiData.accel.x = bmi.getAccelX_mss();
-            bmiData.accel.y = bmi.getAccelX_mss();
-            bmiData.accel.z = bmi.getAccelX_mss();
-            bmiData.gyro.x = toDeg(bmi.getGyroX_rads());
-            bmiData.gyro.y = toDeg(bmi.getGyroX_rads());
-            bmiData.gyro.z = toDeg(bmi.getGyroX_rads());
+            bmiData.accel.x = bmi.getAccelX_mss() + bmiTares[0][0];
+            bmiData.accel.y = bmi.getAccelX_mss() + bmiTares[0][1];
+            bmiData.accel.z = bmi.getAccelX_mss() + bmiTares[0][2];
+            bmiData.gyro.x = toDeg(bmi.getGyroX_rads()) + bmiTares[1][0];
+            bmiData.gyro.y = toDeg(bmi.getGyroX_rads()) + bmiTares[1][1];
+            bmiData.gyro.z = toDeg(bmi.getGyroX_rads()) + bmiTares[1][2];
         }
     }
-}
+
+    void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal) {
+        if(devclass != RCP_DEVCLASS_GYROSCOPE && devclass != RCP_DEVCLASS_ACCELEROMETER) return;
+        if(id == 0) {
+            bool error;
+            if(devclass == RCP_DEVCLASS_ACCELEROMETER) error = icm.calibrateAccel() < 0;
+            else error = icm.calibrateGyro() < 0;
+            if(error) RCPDebug("[ICM] Error on calibrate");
+        }
+
+        else if(id == 1) {
+            if(devclass == RCP_DEVCLASS_ACCELEROMETER) bmiTares[0][channel] = tareVal;
+            else bmiTares[1][channel] = tareVal;
+        }
+    }
+} // namespace Sensors::IMU

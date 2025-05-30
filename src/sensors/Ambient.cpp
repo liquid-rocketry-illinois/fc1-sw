@@ -10,6 +10,10 @@ namespace Sensors::Ambient {
     SensorStatus baroStatus = SensorStatus::RESET;
     SensorStatus shtStatus = SensorStatus::RESET;
 
+    static float baroTare = 0;
+    static float humTare = 0;
+    static float tempTare;
+
     void setup() {
         baroStatus = baro.begin() ? SensorStatus::READY : SensorStatus::INIT_FAIL;
 
@@ -39,7 +43,7 @@ namespace Sensors::Ambient {
             bool ok = baro.read() == MS5611_READ_OK;
 
             if(ok) {
-                data.pressure = baro.getPressure() / 1000.0f;
+                data.pressure = (baro.getPressure() / 1000.0f) + baroTare;
                 baroStatus = SensorStatus::DATA_READY;
             }
 
@@ -54,9 +58,31 @@ namespace Sensors::Ambient {
             float temp;
             float hum;
             bool error = sht.measureLowestPrecision(temp, hum);
-            data.temperature = temp;
-            data.humidity = hum;
+            data.temperature = temp + tempTare;
+            data.humidity = hum + humTare;
             shtStatus = error ? SensorStatus::DATA_FAIL : SensorStatus::DATA_READY;
+        }
+    }
+
+    void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal) {
+        (void) id;
+        (void) channel;
+
+        switch(devclass) {
+        case RCP_DEVCLASS_AM_PRESSURE:
+            baroTare = tareVal;
+            break;
+
+        case RCP_DEVCLASS_RELATIVE_HYGROMETER:
+            humTare = tareVal;
+            break;
+
+        case RCP_DEVCLASS_AM_TEMPERATURE:
+            tempTare = tareVal;
+            break;
+
+        default:
+            break;
         }
     }
 }

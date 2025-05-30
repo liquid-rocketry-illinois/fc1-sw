@@ -4,6 +4,7 @@
 namespace Sensors::Mag {
     LIS2MDL mag(I2C_MODE, 0x1E);
     SensorStatus magStatus;
+    static float tares[3] = {0};
 
     void setup() {
         bool ok = mag.begin() == MAG_SUCCESS;
@@ -31,8 +32,14 @@ namespace Sensors::Mag {
     void getData(AxisData& data) {
         if(magStatus == SensorStatus::INIT_FAIL) return;
         magStatus = SensorStatus::DATA_READY;
-        data.x = mag.readFloatMagX();
-        data.y = mag.readFloatMagY();
-        data.z = mag.readFloatMagZ();
+        data.x = mag.readFloatMagX() + tares[0];
+        data.y = mag.readFloatMagY() + tares[1];
+        data.z = mag.readFloatMagZ() + tares[2];
+    }
+
+    void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal) {
+        if(devclass != RCP_DEVCLASS_MAGNETOMETER) return;
+        (void) id;
+        tares[channel] = tareVal;
     }
 }

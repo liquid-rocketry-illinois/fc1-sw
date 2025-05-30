@@ -34,7 +34,35 @@ namespace Sensors {
         }
     }
 
-    static void handleTare(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {}
+    static void handleTare(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {
+        void (*tare)(RCP_DeviceClass, uint8_t, uint8_t, float) = nullptr;
+
+        switch(devclass) {
+        case RCP_DEVCLASS_AM_PRESSURE:
+        case RCP_DEVCLASS_RELATIVE_HYGROMETER:
+        case RCP_DEVCLASS_AM_TEMPERATURE:
+            tare = Ambient::tare;
+            break;
+
+        case RCP_DEVCLASS_MAGNETOMETER:
+            tare = Mag::tare;
+            break;
+
+        case RCP_DEVCLASS_ACCELEROMETER:
+        case RCP_DEVCLASS_GYROSCOPE:
+            tare = IMU::tare;
+            break;
+
+        case RCP_DEVCLASS_GPS:
+            tare = GNSS::tare;
+            break;
+
+        default:
+            return;
+        }
+
+        tare(devclass, id, tareChannel, tareVal);
+    }
 
     static void handleRead(RCP_DeviceClass devclass, uint8_t id) {
         void (*writer)(const RCP_DeviceClass, const uint8_t, const float*) = nullptr;
@@ -86,10 +114,8 @@ namespace Sensors {
     }
 
     void handleRCPSensorRead(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {
-        if(tareChannel == 255)
-            handleRead(devclass, id);
-        else
-            handleTare(devclass, id, tareChannel, tareVal);
+        if(tareChannel == 255) handleRead(devclass, id);
+        else handleTare(devclass, id, tareChannel, tareVal);
     }
 
 } // namespace Sensors

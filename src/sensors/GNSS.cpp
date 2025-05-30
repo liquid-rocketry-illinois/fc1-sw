@@ -5,6 +5,8 @@ namespace Sensors::GNSS {
     SFE_UBLOX_GNSS gnss;
     SensorStatus gnssStatus = SensorStatus::RESET;
 
+    static float gnssTares[4] = {0};
+
     void setup() {
         gnssStatus = SensorStatus::INIT_FAIL;
 
@@ -28,9 +30,16 @@ namespace Sensors::GNSS {
     }
 
     void getData(GNSSData& data) {
-        data.lat = static_cast<float>(gnss.getLatitude()) / 10000000.0;
-        data.lon = static_cast<float>(gnss.getLongitude()) / 10000000.0;
-        data.alt = static_cast<float>(gnss.getAltitude()) / 1000.0;
-        data.gs = static_cast<float>(gnss.getGroundSpeed()) / 1000.0;
+        data.lat = (static_cast<float>(gnss.getLatitude()) / 10000000.0f) + gnssTares[0];
+        data.lon = (static_cast<float>(gnss.getLongitude()) / 10000000.0f) + gnssTares[1];
+        data.alt = (static_cast<float>(gnss.getAltitude()) / 1000.0f) + gnssTares[2];
+        data.gs = (static_cast<float>(gnss.getGroundSpeed()) / 1000.0f) + gnssTares[3];
+    }
+
+    void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal) {
+        (void) id;
+
+        if(devclass != RCP_DEVCLASS_GPS) return;
+        gnssTares[channel] = tareVal;
     }
 }
