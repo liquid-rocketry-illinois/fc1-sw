@@ -28,9 +28,9 @@ namespace Sensors::GNSS {
     }
 
     void getData(GNSSData& data) {
-        data.lat = static_cast<float>(gnss.getLatitude()) / 10'000'000.0;
-        data.lon = static_cast<float>(gnss.getLongitude()) / 10'000'000.0;
-        data.alt = static_cast<float>(gnss.getAltitude()) / 1'000.0;
-        data.gs = static_cast<float>(gnss.getGroundSpeed()) / 1'000.0;
+        data.lat = static_cast<float>(gnss.getLatitude()) / 10000000.0;
+        data.lon = static_cast<float>(gnss.getLongitude()) / 10000000.0;
+        data.alt = static_cast<float>(gnss.getAltitude()) / 1000.0;
+        data.gs = static_cast<float>(gnss.getGroundSpeed()) / 1000.0;
     }
 }

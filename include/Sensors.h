@@ -22,7 +22,7 @@ namespace Sensors {
     // This "packed" attribute ensures all members are back to back in memory, so when they are serialized
     // we dont have to worry about alignment or padding. The static asserts make sure the packed size of
     // the structs is correct
-    __attribute__ ((packed)) struct AxisData {
+    struct __attribute__ ((packed)) AxisData {
         float x;
         float y;
         float z;
@@ -33,7 +33,7 @@ namespace Sensors {
     namespace Ambient {
         constexpr uint8_t BARO_ADDR = 0x77;
 
-        __attribute__ ((packed)) struct AmbientData {
+        struct __attribute__ ((packed)) AmbientData {
             float pressure;
             float humidity;
             float temperature;
@@ -64,7 +64,7 @@ namespace Sensors {
         constexpr uint8_t BMI_ACCEL_ADDR = 0x18;
         constexpr uint8_t BMI_GYRO_ADDR = 0x68;
 
-        __attribute__ ((packed)) struct IMUData {
+        struct __attribute__ ((packed)) IMUData {
             AxisData accel;
             AxisData gyro;
         };
@@ -84,7 +84,7 @@ namespace Sensors {
     namespace GNSS {
         constexpr uint8_t GNSS_ADDR = 0x42;
 
-        __attribute__ ((packed)) struct GNSSData {
+        struct __attribute__ ((packed)) GNSSData {
             float lat;
             float lon;
             float alt;
@@ -100,7 +100,7 @@ namespace Sensors {
         void getData(GNSSData& data);
     }
 
-    __attribute__ ((packed)) struct SensorData {
+    struct __attribute__ ((packed)) SensorData {
         uint32_t timestamp;
         Ambient::AmbientData ambientData;
         AxisData magData;

@@ -50,7 +50,12 @@ namespace Sensors::Ambient {
         }
 
         if(shtStatus != SensorStatus::INIT_FAIL) {
-            bool error = sht.measureLowestPrecision(data.temperature, data.humidity);
+            // These temporaries are needed because of the struct packing
+            float temp;
+            float hum;
+            bool error = sht.measureLowestPrecision(temp, hum);
+            data.temperature = temp;
+            data.humidity = hum;
             shtStatus = error ? SensorStatus::DATA_FAIL : SensorStatus::DATA_READY;
         }
     }

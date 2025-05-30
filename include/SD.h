@@ -5,7 +5,7 @@
 
 namespace SD {
   constexpr uint8_t SPI_CS = 0;
-  constexpr uint32_t SPI_MAX_CLOCK = 10'000'000UL;
+  constexpr uint32_t SPI_MAX_CLOCK = 10000000UL;
 
   void init();
   void setTest(uint8_t testnum);
