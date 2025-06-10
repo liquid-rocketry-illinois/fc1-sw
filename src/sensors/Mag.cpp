@@ -1,8 +1,9 @@
+#include "peripherals.h"
 #include "Sensors.h"
 #include "RCP.h"
 
 namespace Sensors::Mag {
-    LIS2MDL mag(I2C_MODE, 0x1E);
+    LIS2MDL mag(I2C_MODE, 0x1E, &Peripherals::I2C0);
     SensorStatus magStatus;
     static float tares[3] = {0};
 

@@ -1,9 +1,10 @@
+#include "peripherals.h"
 #include "RCP.h"
 #include "Sensors.h"
 
 namespace Sensors::IMU {
-    ICM42688 icm(Wire, ICM_ADDR);
-    Bmi088 bmi(Wire, BMI_ACCEL_ADDR, BMI_GYRO_ADDR);
+    ICM42688 icm(Peripherals::I2C0, ICM_ADDR);
+    Bmi088 bmi(Peripherals::I2C0, BMI_ACCEL_ADDR, BMI_GYRO_ADDR);
 
     SensorStatus icmStatus = SensorStatus::RESET;
     SensorStatus bmiStatus = SensorStatus::RESET;

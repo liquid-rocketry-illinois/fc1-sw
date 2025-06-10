@@ -1,3 +1,4 @@
+#include "peripherals.h"
 #include "Sensors.h"
 #include "RCP.h"
 
@@ -10,7 +11,7 @@ namespace Sensors::GNSS {
     void setup() {
         gnssStatus = SensorStatus::INIT_FAIL;
 
-        if(!gnss.begin(Wire)) {
+        if(!gnss.begin(Peripherals::I2C0)) {
             RCPDebug("[GPS] Failed to initialize");
             return;
         }

@@ -1,10 +1,9 @@
-#include <Wire.h>
-
+#include "peripherals.h"
 #include "Sensors.h"
 #include "RCP.h"
 
 namespace Sensors::Ambient {
-    MS5611 baro(BARO_ADDR, &Wire);
+    MS5611 baro(BARO_ADDR, &Peripherals::I2C0);
     SensirionI2cSht4x sht;
 
     SensorStatus baroStatus = SensorStatus::RESET;
@@ -23,7 +22,7 @@ namespace Sensors::Ambient {
         else
             RCPDebug("[Barometer] Initialization Failed");
 
-        sht.begin(Wire, SHT40_I2C_ADDR_44);
+        sht.begin(Peripherals::I2C0, SHT40_I2C_ADDR_44);
         bool error = sht.softReset();
         uint32_t serial;
         error = error || sht.serialNumber(serial);
