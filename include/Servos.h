@@ -1,16 +1,12 @@
 #ifndef SERVOS_H
 #define SERVOS_H
 
-#include <Servo.h>
-
 namespace Servos {
-  extern Servo S1;
-  extern Servo S2;
-  extern Servo S3;
-  extern Servo S4;
-
+  constexpr int NUM_SERVOS = 4;
   void setup();
-  void setPosition(Servo& servo, float degrees);
+  void setPosition(uint8_t servo, float degrees);
+  float getSetpoint(uint8_t servo);
+  void handleRCP(uint8_t id, bool r_nw, float wval);
 }
 
 #endif // SERVOS_H

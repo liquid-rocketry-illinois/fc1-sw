@@ -4,6 +4,7 @@
 
 #include "test.h"
 #include "Sensors.h"
+#include "Servos.h"
 
 namespace RCP {
 
@@ -183,6 +184,18 @@ namespace RCP {
                 pacceptor(promptValue);
                 pacceptor = nullptr;
                 break;
+            }
+
+            case RCP_DEVCLASS_ANGLED_ACTUATOR: {
+                float degrees = 0;
+                bool r_nw = true;
+                uint8_t id = bytes[2];
+                if(pktlen == 5) {
+                    r_nw = false;
+                    memcpy(&degrees, bytes + 3, 4);
+                }
+
+                Servos::handleRCP(id, r_nw, degrees);
             }
 
             case RCP_DEVCLASS_AM_PRESSURE:
