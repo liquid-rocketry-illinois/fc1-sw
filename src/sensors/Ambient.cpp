@@ -1,4 +1,4 @@
-#include "peripherals.h"
+#include "Peripherals.h"
 #include "Sensors.h"
 #include "RCP.h"
 

@@ -6,6 +6,13 @@
 namespace Sensors {
     SensorData latestReadings = {0};
 
+    void setup() {
+        Ambient::setup();
+        Mag::setup();
+        IMU::setup();
+        GNSS::setup();
+    }
+
     void yield() {
         latestReadings.timestamp = millis() - RCP::timeOffset;
         Ambient::getData(latestReadings.ambientData);

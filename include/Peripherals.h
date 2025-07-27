@@ -31,7 +31,7 @@ namespace Peripherals {
     constexpr uint8_t TX_CAN = 16;
     constexpr uint8_t RX_CAN = 17;
 
-    constexpr uint8_t CS_ISM = 20;
+    constexpr uint8_t CS_ICM = 20;
 
     constexpr uint8_t SPI0_MISO = 21;
     constexpr uint8_t SPI0_MOSI = 22;

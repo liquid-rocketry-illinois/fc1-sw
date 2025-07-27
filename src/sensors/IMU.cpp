@@ -1,9 +1,9 @@
-#include "peripherals.h"
+#include "Peripherals.h"
 #include "RCP.h"
 #include "Sensors.h"
 
 namespace Sensors::IMU {
-    ICM42688 icm(Peripherals::I2C0, ICM_ADDR);
+    ICM42688 icm(Peripherals::SPI0, Peripherals::GPIO::CS_ICM);
     Bmi088 bmi(Peripherals::I2C0, BMI_ACCEL_ADDR, BMI_GYRO_ADDR);
 
     SensorStatus icmStatus = SensorStatus::RESET;
@@ -15,24 +15,27 @@ namespace Sensors::IMU {
 
     void setupICM() {
         icmStatus = SensorStatus::INIT_FAIL;
-        bool error = icm.begin();
+        int error = icm.begin();
 
-        if(error) {
+        if(error != 0) {
             RCPDebug("[ICM] Failed to initialize");
+            RCP::RCPWriteSerialString(("[ICM] Failure code: " + String(error) + "\n").c_str());
             return;
         }
 
         error = icm.setGyroFS(ICM42688::dps2000);
         error = error || icm.setGyroODR(ICM42688::odr32k);
-        if(error) {
+        if(error != 0) {
             RCPDebug("[ICM-Gyro] Failed to configure settings");
+            RCP::RCPWriteSerialString(("[ICM-Gyro] Failure code: " + String(error) + "\n").c_str());
             return;
         }
 
-        error = icm.setAccelFS(ICM42688::gpm16);
-        error = error || icm.setAccelODR(ICM42688::odr32k);
-        if(error) {
+        icm.setAccelFS(ICM42688::gpm16);
+        error = icm.setAccelODR(ICM42688::odr32k);
+        if(error != 0) {
             RCPDebug("[ICM-Accel] Failed to configure settings");
+            RCP::RCPWriteSerialString(("[ICM-Accel] Failure code: " + String(error) + "\n").c_str());
             return;
         }
 
@@ -42,18 +45,20 @@ namespace Sensors::IMU {
 
     void setupBMI() {
         bmiStatus = SensorStatus::INIT_FAIL;
-        bool error = bmi.begin();
+        int error = bmi.begin();
 
-        if(error) {
+        if(error < 0) {
             RCPDebug("[BMI] Failed to initialize");
+            RCP::RCPWriteSerialString(("[BMI]\tError code: " + String(error) + "\n").c_str());
             return;
         }
 
         error = bmi.setRange(Bmi088::ACCEL_RANGE_24G, Bmi088::GYRO_RANGE_2000DPS);
-        error = error || bmi.setOdr(Bmi088::ODR_2000HZ);
+        error = error || bmi.setOdr(Bmi088::ODR_400HZ);
 
-        if(error) {
+        if(error < 0) {
             RCPDebug("[BMI] Failed to configure settings");
+            RCP::RCPWriteSerialString(("[BMI]\tError code: " + String(error) + "\n").c_str());
             return;
         }
 
@@ -86,11 +91,11 @@ namespace Sensors::IMU {
             bmiStatus = SensorStatus::DATA_READY;
             bmi.readSensor();
             bmiData.accel.x = bmi.getAccelX_mss() + bmiTares[0][0];
-            bmiData.accel.y = bmi.getAccelX_mss() + bmiTares[0][1];
-            bmiData.accel.z = bmi.getAccelX_mss() + bmiTares[0][2];
+            bmiData.accel.y = bmi.getAccelY_mss() + bmiTares[0][1];
+            bmiData.accel.z = bmi.getAccelZ_mss() + bmiTares[0][2];
             bmiData.gyro.x = toDeg(bmi.getGyroX_rads()) + bmiTares[1][0];
-            bmiData.gyro.y = toDeg(bmi.getGyroX_rads()) + bmiTares[1][1];
-            bmiData.gyro.z = toDeg(bmi.getGyroX_rads()) + bmiTares[1][2];
+            bmiData.gyro.y = toDeg(bmi.getGyroY_rads()) + bmiTares[1][1];
+            bmiData.gyro.z = toDeg(bmi.getGyroZ_rads()) + bmiTares[1][2];
         }
     }
 

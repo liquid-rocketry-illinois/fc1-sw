@@ -118,6 +118,7 @@ namespace Sensors {
 
     extern SensorData latestReadings;
 
+    void setup();
     void yield();
     void handleRCPSensorRead(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal);
 }

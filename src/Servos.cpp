@@ -1,25 +1,26 @@
-#include <Arduino.h>
-#include <Servo.h>
-
-#include "RCP.h"
-#include "peripherals.h"
 #include "Servos.h"
 
+#include <Arduino.h>
+#include <SAMD_PWM.h>
+
+#include "Peripherals.h"
+#include "RCP.h"
+
 namespace Servos {
-    static Servo servos[NUM_SERVOS];
+    static SAMD_PWM* servos[NUM_SERVOS];
     static float values[NUM_SERVOS];
 
     void setup() {
-        servos[0].attach(Peripherals::GPIO::SERVO1_CTL);
-        servos[1].attach(Peripherals::GPIO::SERVO2_CTL);
-        servos[2].attach(Peripherals::GPIO::SERVO3_CTL);
-        servos[3].attach(Peripherals::GPIO::SERVO4_CTL);
+        for(uint8_t i = 0; i < NUM_SERVOS; i++) {
+            servos[i] = new SAMD_PWM(PINS[i], 0, 0);
+        }
     }
 
     void setPosition(uint8_t servo, float degrees) {
         if(servo >= NUM_SERVOS) return;
-        servos[servo].write(static_cast<int>(degrees));
         values[servo] = degrees;
+        servos[servo]->setPWM(PINS[servo], PWM_FREQ, degrees);
+        // TODO: figure out the exact math to turn degrees into duty cycle
     }
 
     float getSetpoint(uint8_t servo) {
@@ -35,4 +36,4 @@ namespace Servos {
         RCP::sendOneFloat(RCP_DEVCLASS_ANGLED_ACTUATOR, id, values + id);
     }
 
-}
+} // namespace Servos

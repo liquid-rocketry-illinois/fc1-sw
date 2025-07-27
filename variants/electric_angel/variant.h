@@ -31,6 +31,7 @@
 
 /** Master clock frequency */
 #define VARIANT_MCK        (F_CPU)
+#define VARIANT_GCLK1_FREQ (48000000UL)
 
 /*----------------------------------------------------------------------------
  *        Headers

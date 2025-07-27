@@ -1,9 +1,11 @@
-#include <Arduino.h>
-
-#include "RCP.h"
 #include "test.h"
 
+#include <Arduino.h>
+
 #include "Peripherals.h"
+#include "RCP.h"
+#include "Pyros.h"
+
 namespace Test {
 
 Procedure* tests[16] = {
@@ -14,17 +16,13 @@ Procedure* tests[16] = {
                   ),
                   new WaitProcedure(300000),
                   new OneShot([] {
-                      digitalWrite(Peripherals::GPIO::PYRO1_ARM, HIGH);
-                      digitalWrite(Peripherals::GPIO::PYRO2_ARM, HIGH);
-                      digitalWrite(Peripherals::GPIO::PYRO1_FIRE, HIGH);
-                      digitalWrite(Peripherals::GPIO::PYRO2_FIRE, HIGH);
+                      Pyros::set(Pyros::Pyro::CH1);
+                      Pyros::set(Pyros::Pyro::CH2);
                   }),
                   new WaitProcedure(1000),
                   new OneShot([] {
-                      digitalWrite(Peripherals::GPIO::PYRO1_ARM, LOW);
-                      digitalWrite(Peripherals::GPIO::PYRO2_ARM, LOW);
-                      digitalWrite(Peripherals::GPIO::PYRO1_FIRE, LOW);
-                      digitalWrite(Peripherals::GPIO::PYRO2_FIRE, LOW);
+                      Pyros::unset(Pyros::Pyro::CH1);
+                      Pyros::unset(Pyros::Pyro::CH2);
                   })),
   new Procedure(),
   new Procedure(),

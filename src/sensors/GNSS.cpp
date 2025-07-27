@@ -1,4 +1,4 @@
-#include "peripherals.h"
+#include "Peripherals.h"
 #include "Sensors.h"
 #include "RCP.h"
 
@@ -10,14 +10,12 @@ namespace Sensors::GNSS {
 
     void setup() {
         gnssStatus = SensorStatus::INIT_FAIL;
-
-        if(!gnss.begin(Peripherals::I2C0)) {
+        if(!gnss.begin(Peripherals::I2C1, GNSS_ADDR)) {
             RCPDebug("[GPS] Failed to initialize");
             return;
         }
 
-        bool error = gnss.setI2CAddress(GNSS_ADDR);
-        error = error || gnss.setI2COutput(COM_TYPE_UBX);
+        bool error = gnss.setI2COutput(COM_TYPE_UBX);
         error = error || gnss.saveConfigSelective(VAL_CFG_SUBSEC_IOPORT);
         error = error || gnss.setNavigationFrequency(2);
 
