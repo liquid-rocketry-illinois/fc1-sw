@@ -20,9 +20,8 @@ namespace Sensors {
         DATA_FAIL,
     };
 
-    // This "packed" attribute ensures all members are back to back in memory, so when they are serialized
-    // we dont have to worry about alignment or padding. The static asserts make sure the packed size of
-    // the structs is correct
+    // The static asserts make sure the packed size of the structs is correct, and that the compiler isnt inserting
+    // any extra padding that might introduce random data when we serialize the structs over wire
     struct AxisData {
         float x;
         float y;

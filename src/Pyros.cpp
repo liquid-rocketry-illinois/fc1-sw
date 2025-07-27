@@ -2,7 +2,7 @@
 
 #include <Arduino.h>
 
-#include "peripherals.h"
+#include "Peripherals.h"
 
 namespace Pyros {
     void setup() {

@@ -42,6 +42,8 @@ namespace Sensors {
     }
 
     static void handleTare(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {
+        // This system with the function pointers and such is so I dont have to write out the whole
+        // tare function with the arguments every time because Im lazy
         void (*tare)(RCP_DeviceClass, uint8_t, uint8_t, float) = nullptr;
 
         switch(devclass) {

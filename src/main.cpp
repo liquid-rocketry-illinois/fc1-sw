@@ -37,12 +37,15 @@ void setup() {
     // Test::tests[0]->initialize();
 }
 
+// The loop function just updates all the various components. The core logic is handled by RCP
 void loop() {
     RCP::yield();
     RCP::runTest();
     Sensors::yield();
 }
 
+// Have not figured out proper system resets. For some reason teh ARM CMSIS NVIC_SystemReset
+// function doesnt work, but its supposed to.
 void RCP::systemReset() {
     // NVIC_SystemReset();
     RCPDebug("[RCP] Hardware resets dont work :(");

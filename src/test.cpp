@@ -1,3 +1,5 @@
+// See https://github.com/liquid-rocketry-illinois/LRI-RCI-CPP/blob/master/docs/testing.md
+
 #include "test.h"
 
 #include <Arduino.h>

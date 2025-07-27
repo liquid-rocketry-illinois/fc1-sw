@@ -1,3 +1,14 @@
+/*
+ * Unfortunately, the PWM code that ships with the arduino framework does not work properly. However,
+ * some kind soul has written a library specifically for using PWM on the SAMD/Ex mcus, hence why
+ * that is used instead of the arduino Servo library and pwm functions.
+ *
+ * For whatever reason, the implementor of SAMD_PWM made the SAMD_PWM objects not destructable, so
+ * we have to use pointers that never get deallocated. Its not necessarily a problem for us since we
+ * dont really want to deallocate them anyways, its just a strange choice of implementation.
+ *
+ */
+
 #include "Servos.h"
 
 #include <Arduino.h>

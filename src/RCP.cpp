@@ -1,3 +1,19 @@
+/*
+ * This file contains the logic for RCP. It is based on the reference implementation.
+ * Read up on RCP here: https://wiki.liquidrocket.org/en/electronics/rcp
+ *
+ * The implementation follows the spec very closely, and does not do anything else. The only things
+ * to mention are use of the testing framework and prompts.
+ *
+ * Prompts are set by passing to RCP a function pointer to the function responsible for handling
+ * when the prompt is received, and the prompt data type. When the prompt is received, the prompt
+ * handler is executed. The prompt acceptor is passed the pointer to a 4 byte array that will contain
+ * the prompt data. It is up to the prompt acceptor to know what data type is present in the memory region.
+ *
+ * In this implementation, the testing framework is used for executing the emergency stop sequence. The
+ * sequence can be defined by changing the ESTOP_PROC variable.
+ */
+
 #include <Arduino.h>
 
 #include "RCP.h"
@@ -239,6 +255,7 @@ namespace RCP {
         }
     }
 
+    // The weak attribute is needed so user defined versions of systemReset will override this one
     __attribute__((weak)) void systemReset() {
         while(true) {}
     }

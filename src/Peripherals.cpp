@@ -1,5 +1,6 @@
 #include "Peripherals.h"
 
+// Actual definitions for hardware peripherals
 namespace Peripherals {
     TwoWire I2C0(&sercom0, GPIO::I2C0_SDA, GPIO::I2C0_SCL);
     TwoWire I2C1(&sercom2, GPIO::I2C1_SDA, GPIO::I2C1_SCL);

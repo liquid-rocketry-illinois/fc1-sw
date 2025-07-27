@@ -6,8 +6,6 @@
 #include "LRIRingBuf.h"
 #include "test.h"
 
-// void yield();
-
 // This do-while(0) thing is horrible but if the linux kernel can do it so can I
 #define RCPDebug(str)                                                                                                  \
 do {                                                                                                                   \
