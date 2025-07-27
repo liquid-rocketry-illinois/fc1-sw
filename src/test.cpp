@@ -3,10 +3,29 @@
 #include "RCP.h"
 #include "test.h"
 
+#include "Peripherals.h"
 namespace Test {
 
 Procedure* tests[16] = {
-  new Procedure(),
+    // Procedure for testing pyro channels. Waits for the user button to be pushed, waits 5 minutes, then fires the channels
+    new SequentialProcedure(
+              new BoolWaiter(
+                  [] { return digitalRead(Peripherals::GPIO::USR_BTN) == LOW; }
+                  ),
+                  new WaitProcedure(300000),
+                  new OneShot([] {
+                      digitalWrite(Peripherals::GPIO::PYRO1_ARM, HIGH);
+                      digitalWrite(Peripherals::GPIO::PYRO2_ARM, HIGH);
+                      digitalWrite(Peripherals::GPIO::PYRO1_FIRE, HIGH);
+                      digitalWrite(Peripherals::GPIO::PYRO2_FIRE, HIGH);
+                  }),
+                  new WaitProcedure(1000),
+                  new OneShot([] {
+                      digitalWrite(Peripherals::GPIO::PYRO1_ARM, LOW);
+                      digitalWrite(Peripherals::GPIO::PYRO2_ARM, LOW);
+                      digitalWrite(Peripherals::GPIO::PYRO1_FIRE, LOW);
+                      digitalWrite(Peripherals::GPIO::PYRO2_FIRE, LOW);
+                  })),
   new Procedure(),
   new Procedure(),
   new Procedure(),
