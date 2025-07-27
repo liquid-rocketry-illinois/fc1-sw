@@ -121,7 +121,7 @@ namespace RCP {
     void setPrompt(const char* str, RCP_PromptDataType gng, PromptAcceptor acceptor);
     void yield();
     void runTest();
-    __attribute__ ((weak)) void systemReset();
+    void systemReset();
 
     void sendOneFloat(const RCP_DeviceClass devclass, const uint8_t id, const float* value);
     void sendTwoFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[2]);

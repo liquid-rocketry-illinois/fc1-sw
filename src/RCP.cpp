@@ -246,7 +246,7 @@ namespace RCP {
     void sendOneFloat(const RCP_DeviceClass devclass, const uint8_t id, const float* value) {
         uint32_t time = millis() - timeOffset;
         uint8_t data[11] = {0};
-        data[0] = channel | 11;
+        data[0] = channel | 9;
         data[1] = devclass;
         data[2] = time >> 24;
         data[3] = time >> 16;
@@ -260,7 +260,7 @@ namespace RCP {
     void sendTwoFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[2]) {
         uint32_t time = millis() - timeOffset;
         uint8_t data[15] = {0};
-        data[0] = channel | 15;
+        data[0] = channel | 13;
         data[1] = devclass;
         data[2] = time >> 24;
         data[3] = time >> 16;
@@ -274,7 +274,7 @@ namespace RCP {
     void sendThreeFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[3]) {
         uint32_t time = millis() - timeOffset;
         uint8_t data[19] = {0};
-        data[0] = channel | 19;
+        data[0] = channel | 17;
         data[1] = devclass;
         data[2] = time >> 24;
         data[3] = time >> 16;
@@ -288,7 +288,7 @@ namespace RCP {
     void sendFourFloat(const RCP_DeviceClass devclass, const uint8_t id, const float value[4]) {
         uint32_t time = millis() - timeOffset;
         uint8_t data[23] = {0};
-        data[0] = channel | 23;
+        data[0] = channel | 21;
         data[1] = devclass;
         data[2] = time >> 24;
         data[3] = time >> 16;
