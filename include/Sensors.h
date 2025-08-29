@@ -9,7 +9,7 @@
 #include "MS5611.h"
 #include "SensirionI2cSht4x.h"
 #include "SparkFun_u-blox_GNSS_v3.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 
 namespace Sensors {
     enum class SensorStatus {

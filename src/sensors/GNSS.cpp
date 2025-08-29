@@ -1,6 +1,6 @@
 #include "Peripherals.h"
 #include "Sensors.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 
 namespace Sensors::GNSS {
     SFE_UBLOX_GNSS gnss;
@@ -39,6 +39,6 @@ namespace Sensors::GNSS {
         (void) id;
 
         if(devclass != RCP_DEVCLASS_GPS) return;
-        gnssTares[channel] = tareVal;
+        gnssTares[channel] += tareVal;
     }
 }

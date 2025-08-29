@@ -1,7 +1,7 @@
 #include <Arduino.h>
 
 #include "Pyros.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 #include "Sensors.h"
 #include "Servos.h"
 
@@ -15,6 +15,14 @@ void setup() {
         delay(10);
     }
 
+    Serial.write(4);
+    Serial.write(4);
+    Serial.write(4);
+    Serial.write(4);
+    Serial.write(4);
+    uint8_t val = 5;
+    RCP::write(&val, 1);
+
     Peripherals::I2C0.begin();
     Peripherals::I2C1.begin();
     Peripherals::SPI0.begin();
@@ -23,6 +31,9 @@ void setup() {
     RCP::init();
     RCP::setReady(true);
     RCPDebug("[RCP] Initialization complete!");
+    RCP::RCPWriteSerialString("[RCP] Using ");
+    RCP::RCPWriteSerialString(RCPT_VERSION);
+    RCP::RCPWriteSerialString("\n");
     Sensors::setup();
     Pyros::setup();
     Servos::setup();
@@ -44,10 +55,27 @@ void loop() {
     Sensors::yield();
 }
 
-// Have not figured out proper system resets. For some reason teh ARM CMSIS NVIC_SystemReset
+void RCP::write(const void* data, uint8_t length) {
+    Serial.write(static_cast<const uint8_t*>(data), length);
+}
+
+uint8_t RCP::readAvail() {
+    return Serial.available();
+}
+
+uint8_t RCP::read() {
+    return Serial.read();
+}
+
+uint32_t RCP::systime() {
+    return ::millis();
+}
+
+// Have not figured out proper system resets. For some reason the ARM CMSIS NVIC_SystemReset
 // function doesnt work, but its supposed to.
 void RCP::systemReset() {
     // NVIC_SystemReset();
     RCPDebug("[RCP] Hardware resets dont work :(");
+    while(true) {}
 }
 

@@ -1,5 +1,5 @@
 #include "Peripherals.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 #include "Sensors.h"
 
 namespace Sensors::IMU {
@@ -67,7 +67,7 @@ namespace Sensors::IMU {
     }
 
     void setup() {
-        setupICM();
+        // setupICM();
         setupBMI();
     }
 
@@ -109,8 +109,8 @@ namespace Sensors::IMU {
         }
 
         else if(id == 1) {
-            if(devclass == RCP_DEVCLASS_ACCELEROMETER) bmiTares[0][channel] = tareVal;
-            else bmiTares[1][channel] = tareVal;
+            if(devclass == RCP_DEVCLASS_ACCELEROMETER) bmiTares[0][channel] += tareVal;
+            else bmiTares[1][channel] += tareVal;
         }
     }
 } // namespace Sensors::IMU

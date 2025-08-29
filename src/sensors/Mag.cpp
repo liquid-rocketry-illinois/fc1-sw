@@ -1,6 +1,6 @@
 #include "Peripherals.h"
 #include "Sensors.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 
 namespace Sensors::Mag {
     LIS2MDL mag(I2C_MODE, 0x1E, &Peripherals::I2C0);
@@ -41,6 +41,6 @@ namespace Sensors::Mag {
     void tare(RCP_DeviceClass devclass, uint8_t id, uint8_t channel, float tareVal) {
         if(devclass != RCP_DEVCLASS_MAGNETOMETER) return;
         (void) id;
-        tares[channel] = tareVal;
+        tares[channel] += tareVal;
     }
 }

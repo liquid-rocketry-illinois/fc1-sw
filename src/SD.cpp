@@ -3,7 +3,7 @@
 #include <Arduino.h>
 
 #include "SdFat.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 
 namespace SD {
     static SdExFat sd;

@@ -1,6 +1,6 @@
 #include "Peripherals.h"
 #include "Sensors.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 
 namespace Sensors::Ambient {
     MS5611 baro(BARO_ADDR, &Peripherals::I2C0);
@@ -69,15 +69,15 @@ namespace Sensors::Ambient {
 
         switch(devclass) {
         case RCP_DEVCLASS_AM_PRESSURE:
-            baroTare = tareVal;
+            baroTare += tareVal;
             break;
 
         case RCP_DEVCLASS_RELATIVE_HYGROMETER:
-            humTare = tareVal;
+            humTare += tareVal;
             break;
 
         case RCP_DEVCLASS_AM_TEMPERATURE:
-            tempTare = tareVal;
+            tempTare += tareVal;
             break;
 
         default:

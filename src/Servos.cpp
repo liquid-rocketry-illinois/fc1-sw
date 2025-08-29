@@ -15,7 +15,7 @@
 #include <SAMD_PWM.h>
 
 #include "Peripherals.h"
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 
 namespace Servos {
     static SAMD_PWM* servos[NUM_SERVOS];
@@ -39,12 +39,15 @@ namespace Servos {
         return values[servo];
     }
 
-    void handleRCP(uint8_t id, bool r_nw, float wval) {
-        if(!r_nw) {
-            setPosition(id, wval);
-        }
-
-        RCP::sendOneFloat(RCP_DEVCLASS_ANGLED_ACTUATOR, id, values + id);
-    }
-
 } // namespace Servos
+
+float RCP::readAngledActuator(uint8_t id) {
+    return Servos::values[id];
+}
+
+float RCP::writeAngledActuator(uint8_t id, float controlVal) {
+    Servos::setPosition(id, controlVal);
+    return controlVal;
+}
+
+

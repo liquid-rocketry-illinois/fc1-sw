@@ -1,6 +1,6 @@
 #include "Sensors.h"
 
-#include "RCP.h"
+#include "RCP_Target/RCP_Target.h"
 #include "SD.h"
 
 namespace Sensors {
@@ -10,24 +10,24 @@ namespace Sensors {
         Ambient::setup();
         Mag::setup();
         IMU::setup();
-        GNSS::setup();
+        // GNSS::setup();
     }
 
     void yield() {
-        latestReadings.timestamp = millis() - RCP::timeOffset;
+        latestReadings.timestamp = RCP::millis();
         Ambient::getData(latestReadings.ambientData);
         Mag::getData(latestReadings.magData);
         IMU::getData(latestReadings.icmData, latestReadings.bmiData);
-        GNSS::getData(latestReadings.gnssData);
+        // GNSS::getData(latestReadings.gnssData);
 
-        if(RCP::testState == RCP_TEST_RUNNING) {
+        if(RCP::getTestState() == RCP_TEST_RUNNING) {
             SD::writeDataCSV(latestReadings);
         }
 
-        if(RCP::dataStreaming) {
-            RCP::sendOneFloat(RCP_DEVCLASS_AM_PRESSURE, 0, &latestReadings.ambientData.pressure);
-            RCP::sendOneFloat(RCP_DEVCLASS_RELATIVE_HYGROMETER, 0, &latestReadings.ambientData.humidity);
-            RCP::sendOneFloat(RCP_DEVCLASS_AM_TEMPERATURE, 0, &latestReadings.ambientData.temperature);
+        if(RCP::getDataStreaming()) {
+            RCP::sendOneFloat(RCP_DEVCLASS_AM_PRESSURE, 0, latestReadings.ambientData.pressure);
+            RCP::sendOneFloat(RCP_DEVCLASS_RELATIVE_HYGROMETER, 0, latestReadings.ambientData.humidity);
+            RCP::sendOneFloat(RCP_DEVCLASS_AM_TEMPERATURE, 0, latestReadings.ambientData.temperature);
 
             RCP::sendThreeFloat(RCP_DEVCLASS_MAGNETOMETER, 0, reinterpret_cast<float*>(&latestReadings.magData));
 
@@ -40,91 +40,70 @@ namespace Sensors {
             RCP::sendFourFloat(RCP_DEVCLASS_GPS, 0, reinterpret_cast<float*>(&latestReadings.gnssData));
         }
     }
-
-    static void handleTare(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {
-        // This system with the function pointers and such is so I dont have to write out the whole
-        // tare function with the arguments every time because Im lazy
-        void (*tare)(RCP_DeviceClass, uint8_t, uint8_t, float) = nullptr;
-
-        switch(devclass) {
-        case RCP_DEVCLASS_AM_PRESSURE:
-        case RCP_DEVCLASS_RELATIVE_HYGROMETER:
-        case RCP_DEVCLASS_AM_TEMPERATURE:
-            tare = Ambient::tare;
-            break;
-
-        case RCP_DEVCLASS_MAGNETOMETER:
-            tare = Mag::tare;
-            break;
-
-        case RCP_DEVCLASS_ACCELEROMETER:
-        case RCP_DEVCLASS_GYROSCOPE:
-            tare = IMU::tare;
-            break;
-
-        case RCP_DEVCLASS_GPS:
-            tare = GNSS::tare;
-            break;
-
-        default:
-            return;
-        }
-
-        tare(devclass, id, tareChannel, tareVal);
-    }
-
-    static void handleRead(RCP_DeviceClass devclass, uint8_t id) {
-        void (*writer)(const RCP_DeviceClass, const uint8_t, const float*) = nullptr;
-        const float* data = nullptr;
-
-        switch(devclass) {
-        case RCP_DEVCLASS_AM_PRESSURE:
-            writer = RCP::sendOneFloat;
-            data = &latestReadings.ambientData.pressure;
-            break;
-
-        case RCP_DEVCLASS_RELATIVE_HYGROMETER:
-            writer = RCP::sendOneFloat;
-            data = &latestReadings.ambientData.humidity;
-            break;
-
-        case RCP_DEVCLASS_AM_TEMPERATURE:
-            writer = RCP::sendOneFloat;
-            data = &latestReadings.ambientData.temperature;
-            break;
-
-        case RCP_DEVCLASS_MAGNETOMETER:
-            writer = RCP::sendThreeFloat;
-            data = reinterpret_cast<const float*>(&latestReadings.magData);
-            break;
-
-        case RCP_DEVCLASS_ACCELEROMETER:
-            writer = RCP::sendThreeFloat;
-            data =
-                reinterpret_cast<const float*>(id == 0 ? &latestReadings.icmData.accel : &latestReadings.bmiData.accel);
-            break;
-
-        case RCP_DEVCLASS_GYROSCOPE:
-            writer = RCP::sendThreeFloat;
-            data =
-                reinterpret_cast<const float*>(id == 0 ? &latestReadings.icmData.gyro : &latestReadings.bmiData.gyro);
-            break;
-
-        case RCP_DEVCLASS_GPS:
-            writer = RCP::sendFourFloat;
-            data = reinterpret_cast<const float*>(&latestReadings.gnssData);
-            break;
-
-        default:
-            return;
-        }
-
-        writer(devclass, id, data);
-    }
-
-    void handleRCPSensorRead(RCP_DeviceClass devclass, uint8_t id, uint8_t tareChannel, float tareVal) {
-        if(tareChannel == 255) handleRead(devclass, id);
-        else handleTare(devclass, id, tareChannel, tareVal);
-    }
-
 } // namespace Sensors
+
+RCP::Floats4 RCP::readSensor(RCP_DeviceClass devclass, uint8_t id) {
+    using Sensors::latestReadings;
+    Floats4 floats{};
+    switch(devclass) {
+    case RCP_DEVCLASS_AM_PRESSURE:
+        floats.vals[0] = latestReadings.ambientData.pressure;
+        break;
+
+    case RCP_DEVCLASS_RELATIVE_HYGROMETER:
+        floats.vals[0] = latestReadings.ambientData.humidity;
+        break;
+
+    case RCP_DEVCLASS_AM_TEMPERATURE:
+        floats.vals[0] = latestReadings.ambientData.temperature;
+        break;
+
+    case RCP_DEVCLASS_MAGNETOMETER:
+        memcpy(floats.vals, &latestReadings.magData, 12);
+        break;
+
+    case RCP_DEVCLASS_ACCELEROMETER:
+        memcpy(floats.vals, id == 0 ? &latestReadings.icmData.accel : &latestReadings.bmiData.accel, 12);
+        break;
+
+    case RCP_DEVCLASS_GYROSCOPE:
+        memcpy(floats.vals, id == 0 ? &latestReadings.icmData.gyro : &latestReadings.bmiData.gyro, 12);
+        break;
+
+    case RCP_DEVCLASS_GPS:
+        memcpy(floats.vals, &latestReadings.gnssData, 16);
+        break;
+
+    default:
+        break;
+    }
+
+    return floats;
+}
+
+void RCP::writeSensorTare(RCP_DeviceClass devclass, uint8_t id, uint8_t dataChannel, float tareVal) {
+    using namespace Sensors;
+    switch(devclass) {
+    case RCP_DEVCLASS_AM_PRESSURE:
+    case RCP_DEVCLASS_RELATIVE_HYGROMETER:
+    case RCP_DEVCLASS_AM_TEMPERATURE:
+        Ambient::tare(devclass, id, dataChannel, tareVal);
+        break;
+
+    case RCP_DEVCLASS_MAGNETOMETER:
+        Mag::tare(devclass, id, dataChannel, tareVal);
+        break;
+
+    case RCP_DEVCLASS_ACCELEROMETER:
+    case RCP_DEVCLASS_GYROSCOPE:
+        IMU::tare(devclass, id, dataChannel, tareVal);
+        break;
+
+    case RCP_DEVCLASS_GPS:
+        GNSS::tare(devclass, id, dataChannel, tareVal);
+        break;
+
+    default:
+        break;
+    }
+}
