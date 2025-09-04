@@ -1,6 +1,7 @@
 #include "pyros.h"
 
 #include <Arduino.h>
+#include "RCP_Target/RCP_Target.h"
 
 #include "Peripherals.h"
 
@@ -37,10 +38,15 @@ namespace Pyros {
             digitalWrite(Peripherals::GPIO::PYRO2_FIRE, LOW);
         }
     }
+} // namespace Pyros
 
-    bool get(Pyro pyro) {
-        return digitalRead(pyro == Pyro::CH1 ?
-            Peripherals::GPIO::PYRO1_PRESENT :
-            Peripherals::GPIO::PYRO2_PRESENT) == HIGH;
-    }
+bool RCP::readSimpleActuator(uint8_t id) {
+    return digitalRead(id == 0 ? Peripherals::GPIO::PYRO1_PRESENT : Peripherals::GPIO::PYRO2_PRESENT) == HIGH;
+}
+
+bool RCP::writeSimpleActuator(uint8_t id, RCP_SimpleActuatorState state) {
+    bool finalstate = state == RCP_SIMPLE_ACTUATOR_TOGGLE ? !readSimpleActuator(id) : state == RCP_SIMPLE_ACTUATOR_ON;
+    if(finalstate) Pyros::set(id == 0 ? Pyros::Pyro::CH1 : Pyros::Pyro::CH2);
+    else Pyros::unset(id == 0 ? Pyros::Pyro::CH1 : Pyros::Pyro::CH2);
+    return readSimpleActuator(id);
 }

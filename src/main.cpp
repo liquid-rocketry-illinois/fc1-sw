@@ -9,6 +9,7 @@ void setup() {
     // Comment/uncomment the two versions of setup code below to choose between pyro channels and sensors
 
     // Setup code for sensor usage
+
     Serial.begin(115200);
     while(!Serial) {
         yield();
@@ -38,14 +39,16 @@ void setup() {
     Pyros::setup();
     Servos::setup();
 
+    // -----------------------------------------
 
     // Setup code for pyro channel testing
+
     // RCP::init();
     // RCP::setReady(true);
     // Pyros::setup();
-    // RCP::testNum = 0;
+    // RCP::testNum = 1;
     // RCP::testState = RCP_TEST_RUNNING;
-    // Test::tests[0]->initialize();
+    // Test::tests[1]->initialize();
 }
 
 // The loop function just updates all the various components. The core logic is handled by RCP
