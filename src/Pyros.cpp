@@ -6,7 +6,11 @@
 #include "Peripherals.h"
 
 namespace Pyros {
+    static bool pyros[2];
+
     void setup() {
+        pyros[0] = false;
+        pyros[1] = false;
         pinMode(Peripherals::GPIO::PYRO1_ARM, OUTPUT);
         pinMode(Peripherals::GPIO::PYRO2_ARM, OUTPUT);
         pinMode(Peripherals::GPIO::PYRO1_FIRE, OUTPUT);
@@ -17,11 +21,13 @@ namespace Pyros {
 
     void set(Pyro pyro) {
         if(pyro == Pyro::CH1) {
+            pyros[0] = true;
             digitalWrite(Peripherals::GPIO::PYRO1_ARM, HIGH);
             digitalWrite(Peripherals::GPIO::PYRO1_FIRE, HIGH);
         }
 
         else if(pyro == Pyro::CH2) {
+            pyros[1] = true;
             digitalWrite(Peripherals::GPIO::PYRO2_ARM, HIGH);
             digitalWrite(Peripherals::GPIO::PYRO2_FIRE, HIGH);
         }
@@ -29,11 +35,13 @@ namespace Pyros {
 
     void unset(Pyro pyro) {
         if(pyro == Pyro::CH1) {
+            pyros[0] = false;
             digitalWrite(Peripherals::GPIO::PYRO1_ARM, LOW);
             digitalWrite(Peripherals::GPIO::PYRO1_FIRE, LOW);
         }
 
         else if(pyro == Pyro::CH2) {
+            pyros[1] = false;
             digitalWrite(Peripherals::GPIO::PYRO2_ARM, LOW);
             digitalWrite(Peripherals::GPIO::PYRO2_FIRE, LOW);
         }
@@ -41,7 +49,7 @@ namespace Pyros {
 } // namespace Pyros
 
 bool RCP::readSimpleActuator(uint8_t id) {
-    return digitalRead(id == 0 ? Peripherals::GPIO::PYRO1_PRESENT : Peripherals::GPIO::PYRO2_PRESENT) == HIGH;
+    return Pyros::pyros[id];
 }
 
 bool RCP::writeSimpleActuator(uint8_t id, RCP_SimpleActuatorState state) {
