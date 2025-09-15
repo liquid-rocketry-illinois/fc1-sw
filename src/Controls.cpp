@@ -12,7 +12,7 @@ namespace Controls {
     }
 
     void update(const Sensors::SensorData& data) {
-        // Example of how to write to servo 0, 50 degrees:
-        // RCP::writeAngledActuator(0, 50.0f);
+        // Example of how to write to servo 0, 5 degrees:
+        RCP::writeAngledActuator(0, 15.0f);
     }
 }

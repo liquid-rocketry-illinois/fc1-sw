@@ -1,0 +1,118 @@
+//
+// !!! WARNING !!! AUTO-GENERATED FILE!
+// PLEASE DO NOT MODIFY IT AND USE "platformio.ini":
+// https://docs.platformio.org/page/projectconf/section_env_build.html#build-flags
+//
+{
+    "configurations": [
+        {
+            "name": "PlatformIO",
+            "includePath": [
+                "C:/Users/dyrel/Documents/fc1-sw/include",
+                "C:/Users/dyrel/Documents/fc1-sw/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/RCP-Target/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/SAMD_PWM/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/SdFat - Adafruit Fork/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/SparkFun u-blox GNSS v3/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Bolder Flight Systems BMI088/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/ICM42688/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Sensirion I2C SHT4x/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Sensirion Core/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/LIS2MDL/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/MS5611",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/CAN Adafruit Fork/src",
+                "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Buzzer/src",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Servo/src",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/SPI",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Adafruit_ZeroDMA",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Wire",
+                "C:/Users/dyrel/.platformio/packages/framework-cmsis/CMSIS/Core/Include",
+                "C:/Users/dyrel/.platformio/packages/framework-cmsis-atmel/CMSIS/Device/ATMEL",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/cores/arduino",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino",
+                "C:/Users/dyrel/.platformio/packages/framework-cmsis/CMSIS/DSP/Include",
+                "C:/Users/dyrel/Documents/fc1-sw/variants/electric_angel",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Adafruit_TinyUSB_Arduino/src",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/CI_Tests",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/HID",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/I2S/src",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/SAMD_AnalogCorrection/src",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/SDU/src",
+                "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/USBHost/src",
+                ""
+            ],
+            "browse": {
+                "limitSymbolsToIncludedHeaders": true,
+                "path": [
+                    "C:/Users/dyrel/Documents/fc1-sw/include",
+                    "C:/Users/dyrel/Documents/fc1-sw/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/RCP-Target/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/SAMD_PWM/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/SdFat - Adafruit Fork/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/SparkFun u-blox GNSS v3/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Bolder Flight Systems BMI088/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/ICM42688/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Sensirion I2C SHT4x/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Sensirion Core/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/LIS2MDL/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/MS5611",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/CAN Adafruit Fork/src",
+                    "C:/Users/dyrel/Documents/fc1-sw/.pio/libdeps/debug/Buzzer/src",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Servo/src",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/SPI",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Adafruit_ZeroDMA",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Wire",
+                    "C:/Users/dyrel/.platformio/packages/framework-cmsis/CMSIS/Core/Include",
+                    "C:/Users/dyrel/.platformio/packages/framework-cmsis-atmel/CMSIS/Device/ATMEL",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/cores/arduino",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Adafruit_TinyUSB_Arduino/src/arduino",
+                    "C:/Users/dyrel/.platformio/packages/framework-cmsis/CMSIS/DSP/Include",
+                    "C:/Users/dyrel/Documents/fc1-sw/variants/electric_angel",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/Adafruit_TinyUSB_Arduino/src",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/CI_Tests",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/HID",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/I2S/src",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/SAMD_AnalogCorrection/src",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/SDU/src",
+                    "C:/Users/dyrel/.platformio/packages/framework-arduino-samd-adafruit/libraries/USBHost/src",
+                    ""
+                ]
+            },
+            "defines": [
+                "PLATFORMIO=60118",
+                "__SAME51J19A__",
+                "__SAMD51__",
+                "__FPU_PRESENT",
+                "ARM_MATH_CM4",
+                "ENABLE_CACHE",
+                "VARIANT_QSPI_BAUD_DEFAULT=50000000",
+                "SFE_UBLOX_DISABLE_AUTO_NMEA",
+                "ADAFRUIT_FEATHER_M4_CAN",
+                "CRYSTALLESS",
+                "ARDUINO=10805",
+                "F_CPU=120000000L",
+                "USBCON",
+                "USB_VID=0x239A",
+                "USB_PID=0x80CD",
+                "USB_PRODUCT=\"Electric Angel\"",
+                "USB_MANUFACTURER=\"Liquid Rocketry Illinois\"",
+                "ARDUINO_ARCH_SAMD",
+                "USB_CONFIG_POWER=100",
+                "ARDUINO_SAMD_ADAFRUIT",
+                "__PLATFORMIO_BUILD_DEBUG__",
+                ""
+            ],
+            "cStandard": "gnu11",
+            "cppStandard": "gnu++11",
+            "compilerPath": "C:/Users/dyrel/.platformio/packages/toolchain-gccarmnoneeabi/bin/arm-none-eabi-gcc.exe",
+            "compilerArgs": [
+                "-mfloat-abi=hard",
+                "-mfpu=fpv4-sp-d16",
+                "-mcpu=cortex-m4",
+                "-mthumb",
+                ""
+            ]
+        }
+    ],
+    "version": 4
+}
