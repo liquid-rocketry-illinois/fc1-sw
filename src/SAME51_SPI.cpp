@@ -69,7 +69,11 @@ void SPIClass::beginTransaction(SPISettings settings) {
     SERCOM5->SPI.CTRLA.bit.ENABLE = 1;
     while(SERCOM5->SPI.SYNCBUSY.bit.ENABLE);
 }
-void SPIClass::endTransaction(void) {}
+
+void SPIClass::endTransaction(void) {
+    sercom->SPI.CTRLA.bit.ENABLE = 0;
+    while(sercom->SPI.SYNCBUSY.bit.ENABLE);
+}
 
 void SPIClass::begin() {
     // MCU docs:
