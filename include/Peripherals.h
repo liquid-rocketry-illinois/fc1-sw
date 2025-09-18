@@ -3,7 +3,7 @@
 
 #include <SPI.h>
 #include <Wire.h>
-#include <CANSAME5x.h>
+// #include <CANSAME5x.h>
 
 namespace Peripherals {
   namespace GPIO {
@@ -55,7 +55,7 @@ namespace Peripherals {
   extern SPIClass SDSPI;
   extern SPIClass SPI0;
 
-  extern CANSAME5x CAN;
+  // extern CANSAME5x CAN;
 }
 
 #endif //PERIPHERALS_H
