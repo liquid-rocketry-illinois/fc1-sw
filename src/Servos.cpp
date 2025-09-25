@@ -45,7 +45,7 @@ float RCP::readAngledActuator(uint8_t id) {
     return Servos::values[id];
 }
 
-float RCP::writeAngledActuator(uint8_t id, float controlVal) {
+float RCP::angledActuatorWrite_CLBK(uint8_t id, float controlVal) {
     Servos::setPosition(id, controlVal);
     return controlVal;
 }
