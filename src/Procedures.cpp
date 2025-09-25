@@ -10,9 +10,14 @@ namespace Test {
     public:
         ~RocketFlyer() override = default;
 
-        void initialize() override { Controls::init(); }
+        void initialize() override {
+            RCP::pauseWriteUpdates();
+            Controls::init();
+        }
 
         void execute() override { Controls::update(Sensors::latestReadings); }
+
+        void end(bool interrupted) override { RCP::unpauseWriteUpdates(); }
     };
 
     // Clang format turned off so everything can be nicely human organized
@@ -22,6 +27,7 @@ namespace Test {
         new SequentialProcedure( // Utility to set off pyros 1 minute after power on
                     new WaitProcedure(60000),
                     new OneShot([] {
+                        RCP::pauseWriteUpdates();
                         RCP::writeSimpleActuator(0, RCP_SIMPLE_ACTUATOR_ON);
                         RCP::writeSimpleActuator(1, RCP_SIMPLE_ACTUATOR_ON);
                     }),
@@ -29,6 +35,7 @@ namespace Test {
                     new OneShot([] {
                         RCP::writeSimpleActuator(0, RCP_SIMPLE_ACTUATOR_OFF);
                         RCP::writeSimpleActuator(1, RCP_SIMPLE_ACTUATOR_OFF);
+                        RCP::unpauseWriteUpdates();
                     })
                 ),
         new Procedure(),
