@@ -46,9 +46,7 @@ void setup() {
     // RCP::init();
     // RCP::setReady(true);
     // Pyros::setup();
-    // RCP::testNum = 1;
-    // RCP::testState = RCP_TEST_RUNNING;
-    // Test::tests[1]->initialize();
+    // RCP::startProcedure(1);
 }
 
 // The loop function just updates all the various components. The core logic is handled by RCP
