@@ -31,7 +31,7 @@ namespace Test {
                         RCP::writeSimpleActuator(0, RCP_SIMPLE_ACTUATOR_ON);
                         RCP::writeSimpleActuator(1, RCP_SIMPLE_ACTUATOR_ON);
                     }),
-                    new WaitProcedure(100),
+                    new WaitProcedure(500),
                     new OneShot([] {
                         RCP::writeSimpleActuator(0, RCP_SIMPLE_ACTUATOR_OFF);
                         RCP::writeSimpleActuator(1, RCP_SIMPLE_ACTUATOR_OFF);

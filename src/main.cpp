@@ -10,50 +10,50 @@ void setup() {
 
     // Setup code for sensor usage
 
-    Serial.begin(115200);
-    while(!Serial) {
-        yield();
-        delay(10);
-    }
-
-    Serial.write(4);
-    Serial.write(4);
-    Serial.write(4);
-    Serial.write(4);
-    Serial.write(4);
-    uint8_t val = 5;
-    RCP::write(&val, 1);
-
-    Peripherals::I2C0.begin();
-    Peripherals::I2C1.begin();
-    Peripherals::SPI0.begin();
-    Peripherals::SDSPI.begin();
-
-    RCP::init();
-    RCP::setReady(true);
-    RCPDebug("[RCP] Initialization complete!");
-    RCP::RCPWriteSerialString("[RCP] Using ");
-    RCP::RCPWriteSerialString(RCPT_VERSION);
-    RCP::RCPWriteSerialString("\n");
-    Sensors::setup();
-    Pyros::setup();
-    Servos::setup();
+    // Serial.begin(115200);
+    // while(!Serial) {
+    //     yield();
+    //     delay(10);
+    // }
+    //
+    // Serial.write(4);
+    // Serial.write(4);
+    // Serial.write(4);
+    // Serial.write(4);
+    // Serial.write(4);
+    // uint8_t val = 5;
+    // RCP::write(&val, 1);
+    //
+    // Peripherals::I2C0.begin();
+    // Peripherals::I2C1.begin();
+    // Peripherals::SPI0.begin();
+    // Peripherals::SDSPI.begin();
+    //
+    // RCP::init();
+    // RCP::setReady(true);
+    // RCPDebug("[RCP] Initialization complete!");
+    // RCP::RCPWriteSerialString("[RCP] Using ");
+    // RCP::RCPWriteSerialString(RCPT_VERSION);
+    // RCP::RCPWriteSerialString("\n");
+    // Sensors::setup();
+    // Pyros::setup();
+    // Servos::setup();
 
     // -----------------------------------------
 
     // Setup code for pyro channel testing
 
-    // RCP::init();
-    // RCP::setReady(true);
-    // Pyros::setup();
-    // RCP::startProcedure(1);
+    RCP::init();
+    RCP::setReady(true);
+    Pyros::setup();
+    RCP::startProcedure(1);
 }
 
 // The loop function just updates all the various components. The core logic is handled by RCP
 void loop() {
     RCP::yield();
     RCP::runTest();
-    Sensors::yield();
+    // Sensors::yield();
 }
 
 void RCP::write(const void* data, uint8_t length) {
